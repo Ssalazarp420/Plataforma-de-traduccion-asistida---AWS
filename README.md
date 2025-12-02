@@ -47,7 +47,7 @@ El flujo de datos sigue un modelo reactivo iniciado por la carga de archivos:
 
 1.  **Clonar el repositorio:**
     ```bash
-    git clone [https://github.com/tu-usuario/aws-cat-tool.git](https://github.com/tu-usuario/aws-cat-tool.git)
+    git clone [[https://github.com/tu-usuario/aws-cat-tool.git](https://github.com/Ssalazarp420/Plataforma-de-traduccion-asistida---AWS/tree/main)]([https://github.com/tu-usuario/aws-cat-tool.git](https://github.com/Ssalazarp420/Plataforma-de-traduccion-asistida---AWS/tree/main))
     ```
 2.  **Configurar el Backend:**
     * Desplegar las funciones Lambda ubicadas en `/lambda`.
