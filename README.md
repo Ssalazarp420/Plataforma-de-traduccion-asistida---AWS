@@ -10,7 +10,7 @@
 ## 🏗️ Arquitectura
 El flujo de datos sigue un modelo reactivo iniciado por la carga de archivos:
 
-![Diagrama de Arquitectura](readme-images/arquitectura.png)
+![Diagrama de Arquitectura](readme-images/AWS_architecture.png)
 *(Nota: Sube la captura de la página 4 de tu PDF a la carpeta readme-images)*
 
 ### Flujo de Trabajo:
