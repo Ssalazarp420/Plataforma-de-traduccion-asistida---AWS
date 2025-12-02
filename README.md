@@ -66,5 +66,5 @@ El flujo de datos sigue un modelo reactivo iniciado por la carga de archivos:
 * [cite_start][ ] Desplegar el frontend utilizando **S3 Static Website Hosting** para acceso público[cite: 1325].
 
 ---
-**Estudiante:** [Tu Nombre]
+**Estudiante:** [Sebastian Salazar Perez]
 [cite_start]**Fecha:** 2 de diciembre de 2025 [cite: 1084]
