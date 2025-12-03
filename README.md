@@ -1,70 +1,67 @@
-# 🌐 Plataforma de Traducción Asistida (CAT Tool) Serverless
+# 🌐 Plataforma de Traducción Inteligente (CAT Tool) Serverless
 
-**Proyecto AWS #27 - Implementación Serverless Event-Driven**
+**Proyecto AWS #27 - Versión 2 (Integración con IA Real)**
 
 ## 📋 Descripción
-[cite_start]Este proyecto es una herramienta de traducción asistida por computadora (CAT Tool) construida sobre una arquitectura 100% Serverless en AWS[cite: 1082, 1086]. [cite_start]El sistema permite a los usuarios subir documentos de texto, los cuales son procesados automáticamente para segmentarlos en oraciones y traducirlos (mediante simulación o integración con IA) para su posterior revisión en una interfaz web[cite: 1094].
+Este proyecto es una evolución de la herramienta CAT (Computer-Assisted Translation) implementada sobre una arquitectura **Serverless** en AWS. [cite_start]A diferencia de prototipos anteriores, esta versión integra **Inteligencia Artificial real** para digitalizar y traducir documentos automáticamente[cite: 1333].
 
-[cite_start]El objetivo principal fue implementar un flujo de trabajo reactivo (Event-Driven) que escala automáticamente sin necesidad de administrar servidores[cite: 1321].
+El sistema permite subir archivos (tanto `.txt` como `.pdf`), extrae su contenido mediante OCR inteligente, lo traduce utilizando redes neuronales y notifica al usuario vía email cuando el proceso finaliza.
 
 ## 🏗️ Arquitectura
-El flujo de datos sigue un modelo reactivo iniciado por la carga de archivos:
+El flujo de datos sigue un modelo reactivo (Event-Driven) iniciado por la carga de archivos:
 
 ![Diagrama de Arquitectura](readme-images/AWS_architecture.png)
-*(Nota: Sube la captura de la página 4 de tu PDF a la carpeta readme-images)*
 
-### Flujo de Trabajo:
-1.  [cite_start]**Ingesta:** El usuario sube un archivo `.txt` al bucket de **S3** en la carpeta `uploads/`[cite: 1104].
-2.  [cite_start]**Procesamiento:** El evento `ObjectCreated` dispara la función **AWS Lambda** (`cat-process-document`)[cite: 1226].
-3.  [cite_start]**Lógica de Negocio:** La función segmenta el texto y, debido a restricciones de laboratorio, aplica una **Lógica Híbrida de Traducción** (simulación en caso de fallo de permisos IAM)[cite: 1227, 1245].
-4.  [cite_start]**Persistencia:** Los segmentos procesados se guardan en **Amazon DynamoDB** para mantener el estado y permitir la edición granular[cite: 1098, 1168].
-5.  [cite_start]**Visualización:** El Frontend consulta los datos a través de **API Gateway**, que invoca a la Lambda `cat-api-handler`[cite: 1256].
+### Flujo de Trabajo Actualizado:
+1.  **Ingesta:** El usuario sube un archivo a **S3** (`uploads/`). [cite_start]Soporta formatos `.txt` y `.pdf`[cite: 1340].
+2.  **Detección y Extracción:** Una función **Lambda** detecta el formato:
+    * [cite_start]Si es PDF: Invoca a **Amazon Textract** para realizar OCR y extraer texto plano[cite: 1341, 1401].
+    * [cite_start]Si es TXT: Lee el contenido directamente de S3[cite: 1408].
+3.  [cite_start]**Traducción Neuronal:** El texto segmentado se envía a **Amazon Translate** (servicio real, sin simulaciones) para traducir del inglés al español[cite: 1428, 1445].
+4.  [cite_start]**Persistencia:** Los pares de segmentos (origen-destino) se almacenan en **DynamoDB**[cite: 1343].
+5.  [cite_start]**Notificación:** Al finalizar, **Amazon SNS** envía un correo electrónico al administrador avisando que el documento está listo[cite: 1344, 1462].
+6.  **Visualización:** El Frontend consulta los resultados a través de **API Gateway**.
 
 ### Stack Tecnológico:
-* [cite_start]**Compute:** AWS Lambda (Python 3.9)[cite: 1226].
-* [cite_start]**Storage:** Amazon S3 (Buckets con estructura `uploads/` y `processed/`)[cite: 1103].
-* [cite_start]**Database:** Amazon DynamoDB (Tablas: `TranslationProjects`, `TranslationSegments` en modo On-Demand)[cite: 1160].
-* [cite_start]**API:** Amazon API Gateway (HTTP API)[cite: 1256].
-* [cite_start]**Frontend:** SPA con HTML5, Bootstrap y JavaScript Vanilla[cite: 1279].
+* **Compute:** AWS Lambda (Python 3.9).
+* [cite_start]**AI/ML:** * **Amazon Textract:** OCR para PDFs[cite: 1360].
+    * [cite_start]**Amazon Translate:** Traducción automática[cite: 1361].
+* **Storage:** Amazon S3.
+* **Database:** Amazon DynamoDB (Tablas On-Demand).
+* [cite_start]**Messaging:** Amazon SNS (Notificaciones Email)[cite: 1362].
+* **API:** Amazon API Gateway.
 
 ## ⚙️ Configuración y Desafíos Técnicos
 
-### Modelo de Datos (DynamoDB)
-[cite_start]Se diseñaron dos tablas principales para optimizar el acceso[cite: 1160]:
-* [cite_start]**TranslationProjects:** `PK: project_id` (Gestiona el estado global del archivo)[cite: 1161, 1164].
-* [cite_start]**TranslationSegments:** `PK: project_id`, `SK: sent_id` (Almacena cada oración individualmente)[cite: 1165, 1166].
+### Permisos IAM
+[cite_start]Para el correcto funcionamiento de la v2, el Rol de Ejecución de Lambda requiere las siguientes políticas gestionadas [cite: 1359-1362]:
+* `AmazonTextractFullAccess`
+* `TranslateFullAccess`
+* `AmazonSNSFullAccess`
 
-### Soluciones a Problemas Encontrados (Troubleshooting Log)
-[cite_start]Durante el desarrollo en el entorno *AWS Learner Lab*, se superaron los siguientes obstáculos técnicos[cite: 1315]:
+### Soluciones a Problemas (Bitácora v2)
+[cite_start]Durante la implementación de la Fase 2, se superaron los siguientes retos técnicos[cite: 1490]:
 
-| Error / Síntoma | Causa Raíz | Solución Implementada |
+| Reto Técnico | Contexto | Solución Implementada |
 | :--- | :--- | :--- |
-| **Decimal is not JSON serializable** | [cite_start]DynamoDB devuelve números como objetos `Decimal`, incompatibles con el JSON nativo de Python[cite: 1258, 1260]. | [cite_start]Se implementó una clase personalizada `DecimalEncoder` en la Lambda del API[cite: 1261, 1268]. |
-| **CORS / Error Rojo en consola** | [cite_start]Bloqueo de seguridad del navegador al abrir archivos locales (`origin: null`)[cite: 1282, 1283]. | [cite_start]Se levantó un servidor local con `python -m http.server 8000` y se habilitó CORS en API Gateway [cite: 1310-1312]. |
-| **AccessDenied en Translate** | [cite_start]Restricciones del rol `LabRole` en el entorno educativo[cite: 1318]. | [cite_start]Implementación de bloque `try/except` con *fallback* a traducción simulada (`[ES Simulado]`)[cite: 1245, 1318]. |
+| **Procesamiento de PDF** | S3 no permite leer el texto de archivos binarios/PDF directamente. | [cite_start]Se integró **Amazon Textract** para extraer el texto antes de traducir[cite: 1490]. |
+| **Permisos de IA** | La función fallaba con `AccessDenied` al invocar `translate_text`. | [cite_start]Se actualizaron las políticas IAM del LabRole para permitir acceso a servicios de IA[cite: 1490]. |
+| **Notificaciones Asíncronas** | Necesidad de saber cuándo termina un proceso pesado sin recargar la página. | [cite_start]Implementación de **Amazon SNS** al final del flujo de la Lambda[cite: 1490]. |
+| **Serialización JSON** | Error con tipos `Decimal` de DynamoDB en la API. | [cite_start]Implementación de clase `DecimalEncoder` en el handler de la API[cite: 1482]. |
 
-## 🚀 Instalación y Uso Local
+## 🚀 Instalación y Uso
 
-1.  **Clonar el repositorio:**
-    ```bash
-    git clone [[https://github.com/tu-usuario/aws-cat-tool.git](https://github.com/Ssalazarp420/Plataforma-de-traduccion-asistida---AWS/tree/main)]([https://github.com/tu-usuario/aws-cat-tool.git](https://github.com/Ssalazarp420/Plataforma-de-traduccion-asistida---AWS/tree/main))
-    ```
-2.  **Configurar el Backend:**
-    * Desplegar las funciones Lambda ubicadas en `/lambda`.
-    * Crear las tablas en DynamoDB según la especificación de arquitectura.
-3.  **Ejecutar el Frontend:**
-    Debido a las políticas de CORS, no abras el `index.html` directamente. Usa Python para servirlo:
-    ```bash
-    cd frontend
-    python -m http.server 8000
-    ```
-    Accede a `http://localhost:8000` en tu navegador[cite: 1312].
-
-## 🔮 Próximos Pasos (Roadmap)
-* [cite_start][ ] Implementar **Amazon Cognito** para autenticación de usuarios[cite: 1323].
-* [cite_start][ ] Habilitar método POST en la API para guardar correcciones de traducción[cite: 1324].
-* [cite_start][ ] Desplegar el frontend utilizando **S3 Static Website Hosting** para acceso público[cite: 1325].
+1.  **Configurar SNS:**
+    * Crear un Tópico en SNS (`TranslationAlerts`) y suscribir tu email.
+    * [cite_start]**Importante:** Confirma la suscripción en el enlace que llegará a tu correo[cite: 1477].
+2.  **Despliegue:**
+    * [cite_start]Actualizar la variable `TOPIC_ARN` en el código de la Lambda con el ARN de tu tópico SNS[cite: 1380].
+    * Subir el código actualizado (`lambda_function.py`) que incluye la lógica de Textract y Translate.
+3.  **Prueba:**
+    * Sube un archivo PDF en inglés a la carpeta `uploads/` del bucket S3.
+    * Espera el correo de notificación de SNS.
+    * Verifica la traducción en el Frontend web.
 
 ---
-**Estudiante:** [Sebastian Salazar Perez]
-[cite_start]**Fecha:** 2 de diciembre de 2025 [cite: 1084]
+**Arquitecto Cloud:** [Tu Nombre]
+**Fecha:** 3 de diciembre de 2025
