@@ -63,5 +63,5 @@ El flujo de datos sigue un modelo reactivo (Event-Driven) iniciado por la carga 
     * Verifica la traducción en el Frontend web.
 
 ---
-**Arquitecto Cloud:** [Tu Nombre]
+**Arquitecto Cloud:** [Sebastian Salazar Perez]
 **Fecha:** 3 de diciembre de 2025
