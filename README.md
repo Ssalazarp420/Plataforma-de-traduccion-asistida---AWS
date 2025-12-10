@@ -10,7 +10,7 @@ El sistema permite subir archivos (tanto `.txt` como `.pdf`), extrae su contenid
 ## 🏗️ Arquitectura
 El flujo de datos sigue un modelo reactivo (Event-Driven) iniciado por la carga de archivos:
 
-![Diagrama de Arquitectura](readme-images/AWS_architecture.png)
+![Diagrama de Arquitectura](readme-images/AWS_architecture_v2.png)
 
 ### Flujo de Trabajo Actualizado:
 1.  **Ingesta:** El usuario sube un archivo a **S3** (`uploads/`). [cite_start]Soporta formatos `.txt` y `.pdf`[cite: 1340].
