@@ -1,9 +1,9 @@
-# 🌐 Plataforma de Traducción Inteligente (CAT Tool) Serverless
+# 🌐 Plataforma de traducción inteligente serverless
 
-**Proyecto AWS #27 - Versión 2 (Integración con IA Real)**
+**Proyecto AWS #27 - (Integración con IA)**
 
 ## 📋 Descripción
-Este proyecto es una evolución de la herramienta CAT (Computer-Assisted Translation) implementada sobre una arquitectura **Serverless** en AWS. [cite_start]A diferencia de prototipos anteriores, esta versión integra **Inteligencia Artificial real** para digitalizar y traducir documentos automáticamente[cite: 1333].
+Este proyecto es una evolución de la herramienta CAT (Computer-Assisted Translation) implementada sobre una arquitectura **Serverless** en AWS. [cite_start]A diferencia de prototipos anteriores, esta versión integra **Inteligencia Artificial** para digitalizar y traducir documentos automáticamente[cite: 1333].
 
 El sistema permite subir archivos (tanto `.txt` como `.pdf`), extrae su contenido mediante OCR inteligente, lo traduce utilizando redes neuronales y notifica al usuario vía email cuando el proceso finaliza.
 
