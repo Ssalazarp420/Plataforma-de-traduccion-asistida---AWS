@@ -5,7 +5,7 @@
 ## 📋 Descripción
 Este proyecto es una evolución de la herramienta CAT (Computer-Assisted Translation) implementada sobre una arquitectura **Serverless** en AWS. [cite_start]A diferencia de prototipos anteriores, esta versión integra **Inteligencia Artificial** para digitalizar y traducir documentos automáticamente[cite: 1333].
 
-El sistema permite subir archivos (tanto `.txt` como `.pdf`), extrae su contenido mediante OCR inteligente, lo traduce utilizando redes neuronales y notifica al usuario vía email cuando el proceso finaliza.
+El sistema permite subir archivos (tanto `.txt` como `.pdf`), extrae su contenido mediante OCR inteligente, lo traduce utilizando redes neuronales y notifica al usuario vía email cuando el proceso finaliza.<br>
 Si desea probar puede acceder al sitio web de prueba: 
 http://plataforma-traduccion-pdfs.s3-website.us-east-2.amazonaws.com
 ## 🏗️ Arquitectura
