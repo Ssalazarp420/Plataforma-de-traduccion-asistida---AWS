@@ -10,7 +10,7 @@ Si desea probar puede acceder al sitio web de prueba: http://plataforma-traducci
 ## 🏗️ Arquitectura
 El flujo de datos sigue un modelo reactivo (Event-Driven) iniciado por la carga de archivos:
 
-![Diagrama de Arquitectura](readme-images/AWS_architecture_v2.png)
+![Diagrama de Arquitectura](readme-images/AWS_diagram.drawio.png)
 
 ### Flujo de Trabajo Actualizado:
 1.  **Ingesta:** El usuario sube un archivo a **S3** (`uploads/`). [cite_start]Soporta formatos `.txt` y `.pdf`[cite: 1340].
